@@ -23,7 +23,7 @@ class CountriesViewModel @Inject constructor(
         fetchCountries()
     }
 
-    private fun fetchCountries() {
+    fun fetchCountries() {
         viewModelScope.launch {
             _uiState.value = CountriesUiState.Loading
             try {

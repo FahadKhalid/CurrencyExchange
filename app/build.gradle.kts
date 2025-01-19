@@ -58,8 +58,11 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.ui)
     implementation(libs.androidx.storage)
+    implementation(libs.firebase.appdistribution.gradle)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.core)
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.androidx.hilt.navigation.compose)
@@ -91,5 +94,14 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     androidTestImplementation(platform(libs.compose.bom))
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.core)
     debugImplementation(libs.ui.tooling)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+    testImplementation(libs.truth)
+    testImplementation(libs.turbine)
+    implementation(kotlin("test"))
 }
