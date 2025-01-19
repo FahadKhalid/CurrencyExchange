@@ -98,10 +98,9 @@ I implemented Repo testing, but we can do VM, UseCases and UI also.
 We can add Pagination, the data models may need to be optimized for performance (e.g., pagination, lazy loading, etc.).
 We can also make module based approach for Countries and ExchangeRates.
 
-![CountriesList.png](screenshot/CountriesList.png =250x250)
-![ExchangeRateScreen.png](screenshot/ExchangeRateScreen.png | width= 100)
-![NoInternetConnection.png](screenshot/NoInternetConnection.png =250x250)
-
+![CountriesList.png](screenshot/CountriesList.png)
+![ExchangeRateScreen.png](screenshot/ExchangeRateScreen.png)
+![NoInternetConnection.png](screenshot/NoInternetConnection.png)
 
 // NOTE: The Countries API often returns STREAM ERROR, so for development and
 // testing purposes, i am using a local JSON file (`countries.json`)
