@@ -60,7 +60,7 @@ fun CountriesScreen(
             LazyColumn {
                 items(state.countriesResponse) { country ->
                     CountryCard(
-                        country = country,  // passing each country individually
+                        country = country,
                         context = context,
                         onCountryClick
                     )
@@ -102,7 +102,7 @@ fun CountryCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp) // Add padding around the card for better spacing
+            .padding(8.dp)
             .clickable {
                 if (isConnected) {
                     onCountryClick(jsonString)
@@ -140,13 +140,13 @@ fun CountryCard(
                     text = country.name.common,
                     color = Color.Black,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp // Slightly larger font for the country name
+                    fontSize = 18.sp
                 )
                 country.currencies?.values?.firstOrNull()?.let {
                     Text(
                         text = "${it.name} (${it.symbol})",
                         color = Color.Gray,
-                        fontSize = 14.sp // Smaller font for additional info
+                        fontSize = 14.sp
                     )
                 }
             }
@@ -156,7 +156,7 @@ fun CountryCard(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "Navigate to Details",
                 tint = Color.Gray,
-                modifier = Modifier.size(24.dp) // Icon size
+                modifier = Modifier.size(24.dp)
             )
         }
     }
