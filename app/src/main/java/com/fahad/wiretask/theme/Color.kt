@@ -1,4 +1,4 @@
-package com.example.androidtest.ui.theme
+package com.fahad.wiretask.theme
 
 import androidx.compose.ui.graphics.Color
 

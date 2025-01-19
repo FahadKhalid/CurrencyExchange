@@ -1,4 +1,4 @@
-package com.example.androidtest.countries
+package com.example.androidtest.countries.data.api
 
 import com.example.androidtest.countries.model.CountriesResponse
 import retrofit2.Response

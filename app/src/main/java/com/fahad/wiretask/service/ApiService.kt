@@ -1,6 +1,7 @@
-package com.example.androidtest.countries.service
+package com.fahad.wiretask.service
 
-import com.example.androidtest.countries.CountriesApi
+import com.example.androidtest.countries.data.api.CountriesApi
+import com.fahad.wiretask.exchangerate.data.api.ExchangeRateApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -10,7 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
-class CountriesService {
+class ApiService {
     @OptIn(ExperimentalSerializationApi::class)
     val json by lazy {
         Json {
@@ -34,24 +35,49 @@ class CountriesService {
                 .apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 })
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
             .build()
     }
     private val contentType = "application/json; charset=utf-8".toMediaType()
 
-    private val countriesRetrofit by lazy {
-        Retrofit.Builder()
+    fun createRetrofit(baseUrl: String): Retrofit {
+        return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
     }
 
-    val countriesApi: CountriesApi
-        get() = countriesRetrofit.create(CountriesApi::class.java)
+//    private val countriesRetrofit by lazy {
+//        Retrofit.Builder()
+//            .client(okHttpClient)
+//            .baseUrl(BASE_URL)
+//            .addConverterFactory(json.asConverterFactory(contentType))
+//            .build()
+//    }
 
-    private companion object {
-        private const val BASE_URL = "https://restcountries.com/v3.1/"
+    private val countriesRetrofit by lazy {
+        createRetrofit("https://restcountries.com/v3.1/",)
     }
+
+    private val currencyExchangeRetrofit by lazy {
+        createRetrofit("https://api.exchangerate-api.com/")
+    }
+
+    // Create API interfaces
+    val countriesApi: CountriesApi by lazy {
+        countriesRetrofit.create(CountriesApi::class.java)
+    }
+
+    val exchangeRateApi: ExchangeRateApi by lazy {
+        currencyExchangeRetrofit.create(ExchangeRateApi::class.java)
+    }
+
+//    val countriesApi: CountriesApi
+//        get() = countriesRetrofit.create(CountriesApi::class.java)
+//
+//    private companion object {
+//        private const val BASE_URL = "https://restcountries.com/v3.1/"
+//    }
 }
