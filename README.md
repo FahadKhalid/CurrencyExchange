@@ -66,20 +66,20 @@ Data Layer – Responsible for data fetching and persistence (repositories and A
 The separation of concerns ensures that each layer only depends on the one directly below it, leading to a more modular structure and easier testing.
 
 **Libraries and Tools**
-Hilt: For dependency injection. This simplifies the creation and management of object dependencies across the application.
-Kotlin Coroutines: Used to handle asynchronous operations smoothly, providing a better alternative to callback-based approaches.
-Retrofit: For network communication with APIs. It simplifies API calls and response handling.
-Mockk: A mocking framework used in unit testing to mock dependencies and simulate various behaviors during tests.
-Kotlinx Serialization: Used to handle serialization and deserialization of JSON objects.
-JUnit: For unit testing the ViewModel and repository layers, ensuring business logic and UI states are correct.
-Truth: Used for assertions in your unit tests. It is a library for fluent assertions, allowing you to write clear and readable test expectations.
-Lottie: Used for integrating Lottie animations in Jetpack Compose UI. This helps in rendering rich animations in your UI with Lottie files (e.g., JSON-based animations).
+* Hilt: For dependency injection. This simplifies the creation and management of object dependencies across the application.
+* Kotlin Coroutines: Used to handle asynchronous operations smoothly, providing a better alternative to callback-based approaches.
+* Retrofit: For network communication with APIs. It simplifies API calls and response handling.
+* Mockk: A mocking framework used in unit testing to mock dependencies and simulate various behaviors during tests.
+* Kotlinx Serialization: Used to handle serialization and deserialization of JSON objects.
+* JUnit: For unit testing the ViewModel and repository layers, ensuring business logic and UI states are correct.
+* Truth: Used for assertions in your unit tests. It is a library for fluent assertions, allowing you to write clear and readable test expectations.
+* Lottie: Used for integrating Lottie animations in Jetpack Compose UI. This helps in rendering rich animations in your UI with Lottie files (e.g., JSON-based animations).
 
 **Testing Strategy and Coverage**
-Unit tests were written for repositories and ViewModels using JUnit and Mockk.
-CountriesViewModel 100% Coverage
-ExchangeRate 50% Coverage
-ExchangeRateRepositoryImpl 100% Coverage
+* Unit tests were written for repositories and ViewModels using JUnit and Mockk.
+* CountriesViewModel 100% Coverage
+* ExchangeRate 50% Coverage
+* ExchangeRateRepositoryImpl 100% Coverage
 
 **Known Issues, Limitations, or Areas for Improvement**
 **Error Handling:**
@@ -98,16 +98,15 @@ I implemented Repo testing, but we can do VM, UseCases and UI also.
 We can add Pagination, the data models may need to be optimized for performance (e.g., pagination, lazy loading, etc.).
 We can also make module based approach for Countries and ExchangeRates.
 
-![CountriesList.png](screenshot/CountriesList.png)
-![ExchangeRateScreen.png](screenshot/ExchangeRateScreen.png)
-![NoInternetConnection.png](screenshot/NoInternetConnection.png)
+<img src="screenshot/CountriesList.png" width="500" alt=""/>
+<img src="screenshot/ExchangeRateScreen.png" width="500" alt=""/>
+<img src="screenshot/NoInternetConnection.png" width="500" alt=""/>
 
-// NOTE: The Countries API often returns STREAM ERROR, so for development and
-// testing purposes, i am using a local JSON file (`countries.json`)
-// instead of making actual network requests to the API. This ensures
-// that the app remains functional while debugging or testing.
-// CountriesScreen.kt
-// ==============================================================
+NOTE: The Countries API often returns STREAM ERROR, so for development and
+testing purposes, i am using a local JSON file (`countries.json`)
+instead of making actual network requests to the API. This ensures
+that the app remains functional while debugging or testing.
+CountriesScreen.kt
 ```kotlin
      val items = loadJsonFromAssets(context, "countries.json")
       ItemListScreen(items, context, onCountryClick)
