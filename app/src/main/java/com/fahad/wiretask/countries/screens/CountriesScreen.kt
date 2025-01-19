@@ -85,9 +85,9 @@ fun CountriesScreen(
 // testing purposes, i am using a local JSON file (`countries.json`)
 // instead of making actual network requests to the API. This ensures
 // that the app remains functional while debugging or testing.
-// ----------------------------------------------------------------------
-    //  val items = loadJsonFromAssets(context, "countries.json")
-    //  ItemListScreen(items, context, onCountryClick)
+// --------------------CountriesScreen.kt--------------------------------------------------
+//      val items = loadJsonFromAssets(context, "countries.json")
+//      ItemListScreen(items, context, onCountryClick)
 }
 
 @Composable

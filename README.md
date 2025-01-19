@@ -60,7 +60,7 @@ Good luck! We look forward to seeing your implementation.
 **Architecture Pattern**
 For this project i used MVVM, I opted to use the Clean Architecture pattern, which helps to separate concerns, making the code more maintainable and testable. Clean Architecture divides the application into different layers:
 
-Presentation Layer – Contains the ViewModel and UI logic.
+**Presentation Layer – Contains the ViewModel and UI logic.**
 Domain Layer – Holds business logic (use cases).
 Data Layer – Responsible for data fetching and persistence (repositories and APIs).
 The separation of concerns ensures that each layer only depends on the one directly below it, leading to a more modular structure and easier testing.
@@ -82,22 +82,34 @@ ExchangeRate 50% Coverage
 ExchangeRateRepositoryImpl 100% Coverage
 
 **Known Issues, Limitations, or Areas for Improvement**
-Error Handling:
+**Error Handling:**
 Currently, error handling in the repository is simplistic. More detailed error handling (e.g., handling specific API error codes) can be added to improve the user experience.
 
-Caching:
+**Caching:**
 The app does not implement caching for API responses. In real-world scenarios, caching is beneficial for improving app performance and reducing API calls, especially for countries
 
-Network Optimization:
+**Network Optimization:**
 I added loading animation while getting data from API and also checking the network connection, I think we can do it more better using cashing.
 
-Testing Strategy:
+**Testing Strategy:**
 I implemented Repo testing, but we can do VM, UseCases and UI also. 
 
-Scalability:
+**Scalability:**
 We can add Pagination, the data models may need to be optimized for performance (e.g., pagination, lazy loading, etc.).
 We can also make module based approach for Countries and ExchangeRates.
 
-![CountriesList.png](screenshot/CountriesList.png)
-![ExchangeRateScreen.png](screenshot/ExchangeRateScreen.png)
-![NoInternetConnection.png](screenshot/NoInternetConnection.png)
+![CountriesList.png](screenshot/CountriesList.png =250x250)
+![ExchangeRateScreen.png](screenshot/ExchangeRateScreen.png | width= 100)
+![NoInternetConnection.png](screenshot/NoInternetConnection.png =250x250)
+
+
+// NOTE: The Countries API often returns STREAM ERROR, so for development and
+// testing purposes, i am using a local JSON file (`countries.json`)
+// instead of making actual network requests to the API. This ensures
+// that the app remains functional while debugging or testing.
+// CountriesScreen.kt
+// ==============================================================
+```kotlin
+     val items = loadJsonFromAssets(context, "countries.json")
+      ItemListScreen(items, context, onCountryClick)
+```
