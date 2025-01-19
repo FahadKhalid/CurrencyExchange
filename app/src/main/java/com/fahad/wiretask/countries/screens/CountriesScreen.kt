@@ -80,7 +80,12 @@ fun CountriesScreen(
         }
     }
 
-    // NOTE: Most of the time, we have STREAM ERROR from the api, so i used the json file for developing and testing
+// ----------------------------------------------------------------------
+// NOTE: The API often returns STREAM ERROR, so for development and
+// testing purposes, i am using a local JSON file (`countries.json`)
+// instead of making actual network requests to the API. This ensures
+// that the app remains functional while debugging or testing.
+// ----------------------------------------------------------------------
     //  val items = loadJsonFromAssets(context, "countries.json")
     //  ItemListScreen(items, context, onCountryClick)
 }
@@ -106,16 +111,16 @@ fun CountryCard(
 
                 }
             },
-        shape = RoundedCornerShape(12.dp), // Rounded corners for a modern look
+        shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
-        ) // Add shadow for better card visibility
+        )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
-                .padding(12.dp), // Padding inside the card for content
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Country Flag
@@ -123,9 +128,9 @@ fun CountryCard(
                 model = country.flags.png,
                 contentDescription = "${country.name.common} Flag",
                 modifier = Modifier
-                    .size(50.dp) // Larger size for better visibility
-                    .clip(RoundedCornerShape(8.dp)) // Rounded corners for the image
-                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)) // Optional border
+                    .size(50.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
             )
             Spacer(modifier = Modifier.width(12.dp))
 
@@ -167,7 +172,11 @@ fun CountryCardPreview(
     ) {}
 }
 
-// NOTE: This code is used when the countries API is not working.
+// ============================ NOTE ============================
+// This code is used as a fallback when the countries API is not
+// working or unavailable. It loads data from a local JSON file
+// for development and testing purposes.
+// ==============================================================
 @Composable
 fun ItemListScreen(
     items: List<CountriesResponse>,

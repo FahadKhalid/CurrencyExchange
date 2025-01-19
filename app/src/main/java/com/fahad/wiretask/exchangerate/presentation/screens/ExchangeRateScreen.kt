@@ -124,7 +124,7 @@ fun ExchangeRateCard(
                             2.dp,
                             Color.Gray,
                             RoundedCornerShape(8.dp)
-                        ), // Border around the image
+                        ),
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(16.dp))

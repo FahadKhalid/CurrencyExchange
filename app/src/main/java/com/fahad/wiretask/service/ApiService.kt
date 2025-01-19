@@ -18,30 +18,25 @@ class ApiService {
             isLenient = true
             ignoreUnknownKeys = true
             encodeDefaults = true
-            // explicitNulls, defines whether null property
-            // values should be included in the serialized JSON string.
             explicitNulls = false
-
-            // If API returns null or unknown values for Enums, we can use default constructor parameter to override it
-            // https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/json.md#coercing-input-values
             coerceInputValues = true
         }
     }
 
-    val okHttpClient by lazy {
+    private val okHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor()
-                .apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                })
+                    .apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    })
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .build()
     }
     private val contentType = "application/json; charset=utf-8".toMediaType()
 
-    fun createRetrofit(baseUrl: String): Retrofit {
+    private fun createRetrofit(baseUrl: String): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(baseUrl)
@@ -49,16 +44,8 @@ class ApiService {
             .build()
     }
 
-//    private val countriesRetrofit by lazy {
-//        Retrofit.Builder()
-//            .client(okHttpClient)
-//            .baseUrl(BASE_URL)
-//            .addConverterFactory(json.asConverterFactory(contentType))
-//            .build()
-//    }
-
     private val countriesRetrofit by lazy {
-        createRetrofit("https://restcountries.com/v3.1/",)
+        createRetrofit("https://restcountries.com/v3.1/")
     }
 
     private val currencyExchangeRetrofit by lazy {
@@ -73,11 +60,4 @@ class ApiService {
     val exchangeRateApi: ExchangeRateApi by lazy {
         currencyExchangeRetrofit.create(ExchangeRateApi::class.java)
     }
-
-//    val countriesApi: CountriesApi
-//        get() = countriesRetrofit.create(CountriesApi::class.java)
-//
-//    private companion object {
-//        private const val BASE_URL = "https://restcountries.com/v3.1/"
-//    }
 }

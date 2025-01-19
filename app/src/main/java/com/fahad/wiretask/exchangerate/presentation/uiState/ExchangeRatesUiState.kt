@@ -1,7 +1,7 @@
 package com.fahad.wiretask.exchangerate.presentation.uiState
 
 sealed interface ExchangeRatesUiState {
-    object Loading : ExchangeRatesUiState
+    data object Loading : ExchangeRatesUiState
 
     data class Success(
         val exchangeRateResponse: Double,
