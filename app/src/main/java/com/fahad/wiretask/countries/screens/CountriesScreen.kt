@@ -1,0 +1,185 @@
+package com.fahad.wiretask.countries.screens
+
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
+import com.example.androidtest.countries.model.CountriesResponse
+import com.fahad.wiretask.countries.viewmodel.CountriesViewModel
+import com.fahad.wiretask.utils.isInternetAvailable
+import com.example.androidtest.countries.presentation.states.CountriesUiState
+import com.fahad.wiretask.utils.LoadingView
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.serialization.json.Json
+
+@Composable
+fun CountriesScreen(
+    @ApplicationContext context: Context,
+    viewModel: CountriesViewModel = hiltViewModel(),
+    onCountryClick: (String) -> Unit
+) {
+    val uiState: CountriesUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    // Render UI based on state
+    when (val state = uiState) {
+        is CountriesUiState.Loading -> LoadingView()
+        is CountriesUiState.Success -> {
+            LazyColumn {
+                items(state.countriesResponse) { country ->
+                    CountryCard(
+                        country = country,  // passing each country individually
+                        context = context,
+                        onCountryClick
+                    )
+                }
+            }
+        }
+
+        is CountriesUiState.Failed -> {
+            LaunchedEffect(state.message) {
+                Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+            }
+            Text(
+                text = state.message,
+                modifier = Modifier.padding(16.dp),
+                color = Color.Red
+            )
+        }
+    }
+
+    // NOTE: Most of the time, we have STREAM ERROR from the api, so i used the json file for developing and testing
+    //  val items = loadJsonFromAssets(context, "countries.json")
+    //  ItemListScreen(items, context, onCountryClick)
+}
+
+@Composable
+fun CountryCard(
+    country: CountriesResponse,
+    context: Context,
+    onCountryClick: (String) -> Unit
+) {
+    val jsonString = Json.encodeToString(CountriesResponse.serializer(), country)
+    val isConnected = isInternetAvailable()
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp) // Add padding around the card for better spacing
+            .clickable {
+                if (isConnected) {
+                    onCountryClick(jsonString)
+                } else {
+                    Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+
+                }
+            },
+        shape = RoundedCornerShape(12.dp), // Rounded corners for a modern look
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ) // Add shadow for better card visibility
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(12.dp), // Padding inside the card for content
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Country Flag
+            AsyncImage(
+                model = country.flags.png,
+                contentDescription = "${country.name.common} Flag",
+                modifier = Modifier
+                    .size(50.dp) // Larger size for better visibility
+                    .clip(RoundedCornerShape(8.dp)) // Rounded corners for the image
+                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp)) // Optional border
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // Country Information
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = country.name.common,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp // Slightly larger font for the country name
+                )
+                country.currencies?.values?.firstOrNull()?.let {
+                    Text(
+                        text = "${it.name} (${it.symbol})",
+                        color = Color.Gray,
+                        fontSize = 14.sp // Smaller font for additional info
+                    )
+                }
+            }
+
+            // Forward Arrow Icon
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = "Navigate to Details",
+                tint = Color.Gray,
+                modifier = Modifier.size(24.dp) // Icon size
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CountryCardPreview(
+) {
+    CountryCard(
+        CountriesResponse.previewData,
+        LocalContext.current
+    ) {}
+}
+
+// NOTE: This code is used when the countries API is not working.
+@Composable
+fun ItemListScreen(
+    items: List<CountriesResponse>,
+    context: Context,
+    onCountryClick: (String) -> Unit
+) {
+    LazyColumn(
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(items) { item ->
+            CountryCard(country = item, context, onCountryClick)
+        }
+    }
+}
