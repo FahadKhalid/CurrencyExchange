@@ -43,6 +43,7 @@ import com.fahad.wiretask.countries.viewmodel.CountriesViewModel
 import com.fahad.wiretask.utils.isInternetAvailable
 import com.example.androidtest.countries.presentation.states.CountriesUiState
 import com.fahad.wiretask.utils.LoadingView
+import com.fahad.wiretask.utils.loadCountriesFromAssets
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.json.Json
 
@@ -50,6 +51,24 @@ import kotlinx.serialization.json.Json
 fun CountriesScreen(
     @ApplicationContext context: Context,
     viewModel: CountriesViewModel = hiltViewModel(),
+    onCountryClick: (String) -> Unit
+) {
+
+    // NOTE: The API often returns STREAM ERROR, so for development and
+    // testing purposes, i am using a local JSON file (`countries.json`)
+    // instead of making actual network requests to the API. This ensures
+    // that the app remains functional while debugging or testing.
+    // FetchDataFromAPI(viewModel, context, onCountryClick)
+
+    //The app currently loads country data from the assets folder using loadJsonFromAssets,
+    // as the API response was unreliable. You can uncomment the API code to test it if needed.
+    FetchDataFromAssets(context, onCountryClick)
+}
+
+@Composable
+private fun FetchDataFromAPI(
+    viewModel: CountriesViewModel,
+    context: Context,
     onCountryClick: (String) -> Unit
 ) {
     val uiState: CountriesUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -79,15 +98,17 @@ fun CountriesScreen(
             )
         }
     }
+}
 
-// ----------------------------------------------------------------------
-// NOTE: The API often returns STREAM ERROR, so for development and
-// testing purposes, i am using a local JSON file (`countries.json`)
-// instead of making actual network requests to the API. This ensures
-// that the app remains functional while debugging or testing.
-// --------------------CountriesScreen.kt--------------------------------------------------
-//      val items = loadJsonFromAssets(context, "countries.json")
-//      ItemListScreen(items, context, onCountryClick)
+@Composable
+private fun FetchDataFromAssets(
+    context: Context,
+    onCountryClick: (String) -> Unit
+) {
+    val items = loadCountriesFromAssets(context, "countries.json")
+    if (items != null) {
+        ItemListScreen(items, context, onCountryClick)
+    }
 }
 
 @Composable

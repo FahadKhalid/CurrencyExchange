@@ -70,7 +70,7 @@ The separation of concerns ensures that each layer only depends on the one direc
 * **Kotlin** Coroutines: Used to handle asynchronous operations smoothly, providing a better alternative to callback-based approaches.
 * **Retrofit**: For network communication with APIs. It simplifies API calls and response handling.
 * **Mockk**: A mocking framework used in unit testing to mock dependencies and simulate various behaviors during tests.
-* Kotlinx Serialization: Used to handle serialization and deserialization of JSON objects.
+* **Kotlinx Serialization**: Used to handle serialization and deserialization of JSON objects.
 * **JUnit**: For unit testing the ViewModel and repository layers, ensuring business logic and UI states are correct.
 * **Truth**: Used for assertions in your unit tests. It is a library for fluent assertions, allowing you to write clear and readable test expectations.
 * **Lottie**: Used for integrating Lottie animations in Jetpack Compose UI. This helps in rendering rich animations in your UI with Lottie files (e.g., JSON-based animations).
@@ -102,13 +102,15 @@ We can also make module based approach for Countries and ExchangeRates.
 <img src="screenshot/ExchangeRateScreen.png" width="500" alt=""/>
 <img src="screenshot/NoInternetConnection.png" width="500" alt=""/>
 
-**NOTE: The Countries API mostly returns STREAM ERROR, so for development and
+**NOTE**
+**The API often returns STREAM ERROR, so for development and
 testing purposes, i am using a local JSON file (`countries.json`)
 instead of making actual network requests to the API. This ensures
-that the app remains functional while debugging or testing.
-If you also found same issue, please uncomment the below code.
-CountriesScreen.kt**
+that the app remains functional while debugging or testing.**
 ```kotlin
-     val items = loadJsonFromAssets(context, "countries.json")
-      ItemListScreen(items, context, onCountryClick)
+FetchDataFromAssets(context, onCountryClick)
+```
+
+```kotlin
+FetchDataFromAPI(viewModel, context, onCountryClick)
 ```
