@@ -11,6 +11,10 @@ android {
     namespace = "com.fahad.wiretask"
     compileSdk = 35
 
+    packaging {
+        resources.excludes.add("META-INF/*")
+    }
+
     defaultConfig {
         applicationId = "com.fahad.wiretask"
         minSdk = 24
